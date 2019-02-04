@@ -1,3 +1,6 @@
+This is a simple tool that searches for and presents resources from Hacker News related to learning tech topics. Simply type in what you want to learn and the tool will find and present discussions and links relevant to your query. You can also build a list of saved items that interest you. Future versions may include more features such as exporting your saved item list or searching other websites.
+
+----
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
