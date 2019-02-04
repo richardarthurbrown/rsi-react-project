@@ -11,6 +11,8 @@ class SearchInputComponent extends React.Component {
       searchType: "0",
     }
   }
+  // This function parses the query string from the value stored in ReactRouter's location & 
+  // removes extra symbols.
   parseQueryString() {
     const splits = this.props.location.search.split('=')
     return splits[1] ? splits[1] : ''
@@ -20,9 +22,8 @@ class SearchInputComponent extends React.Component {
     this.setState({query: event.target.value})
   }
 
-  selectHandler = () => {
-    let sel = document.getElementById('selector')
-    this.setState({searchType: sel.options[sel.selectedIndex].value})
+  selectHandler = (event) => {
+    this.setState({searchType: event.target.value})
   }
 
   onSubmitHandler = (event) => {
@@ -43,7 +44,7 @@ class SearchInputComponent extends React.Component {
       <Form onSubmit={this.onSubmitHandler} > 
         <FormGroup className="d-flex justify-content-between">
           <Input type="text" placeholder="I Want To Learn..." onChange={this.changeHandler} value={this.state.query}></Input>
-          <Input type="select" id="selector" onChange={this.selectHandler}>
+          <Input type="select" id="selector" onChange={this.selectHandler} value={this.state.value}>
             <option value="0">Search By Relevance</option>
             <option value="1">Search By Date</option>
           </Input>

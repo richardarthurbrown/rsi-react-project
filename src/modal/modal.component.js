@@ -18,18 +18,11 @@ export default class ModalResult extends React.Component {
       
     };
   }
-
+  // This toggles whether the modal is open or closed.
   toggle = (event) => {
     this.setState({
       modal: !this.state.modal
     });
-  }
-
-  storyParser = (story) =>{
-    if (story){
-    let cleanStory = story.replace(/(&#x2F;)/g, '/').replace(/(&#x27;)/g, `'`).replace(/(<p>)/g, '\n').replace(/(&gt;)/g, '>').replace(/(&lt;)/g, '<')
-    return (cleanStory)
-    }
   }
 
   fetcher = (ID)=> {
@@ -38,11 +31,14 @@ export default class ModalResult extends React.Component {
       .then(myJson => this.responseParser(myJson))
   }
 
+  // This is the core bit of logic for scraping the comments in the returned HackerNews threads and pulling out URLs. It processes
+  // the entire text of every comment looking for regex matches and pushes them to an array. Then, if the comment has child comments
+  // it recursively fetches the children and performs the scraping operation again.
   responseParser = (json) => {
     let urlarr = []
     if(json.text){
       let cleanstr = json.text.replace(regrep, "/")
-      if (cleanstr !== null) {
+      if (cleanstr) {
         let matched = cleanstr.match(urlreg)
         if (matched){
           for (let item of matched){
@@ -68,10 +64,23 @@ export default class ModalResult extends React.Component {
     )
   }
 
-
+  // This searches for unescaped hex characters and HTML tags in the "story" text and replaces them with 
+  // the correct values. If there's a cleaner function or library for doing this I'd love to know.
+  storyParser = (story) =>{
+    if (story){
+    let cleanStory = story.replace(/(&#x2F;)/g, '/')
+                      .replace(/(&#x27;)/g, `'`)
+                      .replace(/(<p>)/g, '\n')
+                      .replace(/(&gt;)/g, '>')
+                      .replace(/(&lt;)/g, '<')
+    return (cleanStory)
+    }
+  }
+  // This lifecycle method performs the initial fetch based on the objectID passed in from props. Subsequent fetches are 
+  // part of the recursive action of the responseParser function. This also passes the uncleaned story text to the parser 
+  // function from props.
   componentDidMount(){
     this.fetcher(this.props.object.objectID)
-
     this.setState({storytext: this.storyParser(this.props.object.story_text)})
   }
 
@@ -86,7 +95,7 @@ export default class ModalResult extends React.Component {
             <p><a href={storyURL + this.props.object.objectID} target="_blank" rel="noopener noreferrer">Read on HN</a></p>
             <ListGroup >
               {this.state.urls.map(this.renderUrls)}
-             </ListGroup>
+            </ListGroup>
           </ModalBody>
           <ModalFooter>
             <Button color="danger" onClick={this.toggle}>Close</Button>

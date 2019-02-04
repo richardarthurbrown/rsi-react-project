@@ -9,14 +9,11 @@ export default class ModalListItem extends React.Component {
       saved: false
     }
   }
-
+  // This handles the state and style of the button in each list item.
   handleClick = (event) => {
     this.props.handleSave(event)
     this.setState({saved: true})
   }
-  // 
-
-  
 
   render(){
     return(

@@ -3,7 +3,9 @@ import { Container, Row, Col } from 'reactstrap'
 import { SearchInput } from './search-input.component'
 import SearchResults from './hn-search-results.component'
 
-
+// The Search Container holds state and passes queries from the input to the results components.
+// In future versions it may also provide functionality for switching between search APIs but 
+// that isn't built out right now.
 
 
 export default class SearchContainer extends React.Component {
@@ -14,7 +16,9 @@ export default class SearchContainer extends React.Component {
       value: null,
     }
   }
-
+  // These lifecycle methods check if the user has already searched for a query. If they have it saves the query on unmount and 
+  // reloads it when the component is mounted again.
+  
   componentDidMount(){
     if (this.props.lastquery){
       this.setState({query: this.props.lastquery})

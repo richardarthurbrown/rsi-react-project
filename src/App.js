@@ -13,6 +13,8 @@ class App extends Component {
       lastquery: null,
     }
   }
+  // These functions handle the mechanics for saving & deleting items from the saved item page
+  // and for remembering the last searched query when switching between pages.
 
   handleState = (state) => {
     this.setState({lastquery: state.query})
@@ -25,7 +27,7 @@ class App extends Component {
     if (this.state.urls.includes(target)){
       alert("You already saved this!")
       return
-      }
+    }
     let joined = this.state.urls.concat(target)
     this.setState({urls: joined})
   }
